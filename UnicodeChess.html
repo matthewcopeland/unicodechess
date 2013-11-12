@@ -66,18 +66,20 @@
     </head>
     <body>
         <div id="chessboard">
-            <div class="captured-pieces" data-bind="foreach: whiteCaptured">
+
+            <div class="captured-pieces" data-bind="foreach: blackCaptured">
                 <p data-bind="html: piece"></p>
             </div>
 
             <table>
                 <tbody data-bind="foreach: board">
                   <tr data-bind="foreach: $data">
-                      <td><p class="piece" data-bind="html: piece, click: $parent.clickHandler, css: {'selected-piece': $data == $root.selectedPiece }"></p></td>
+                      <td><p class="piece" data-bind="html: piece, click: $root.clickHandler, css: {'selected-piece': $data == $root.selectedPiece() }"></p></td>
                   </tr>
                 </tbody>
             </table>
-            <div class="captured-pieces" data-bind="foreach: blackCaptured">
+
+            <div class="captured-pieces" data-bind="foreach: whiteCaptured">
                 <p data-bind="html: piece"></p>
             </div>
         <div>
@@ -97,18 +99,16 @@
             self.clickHandler = function(item) {
 
                 if (!self.selectedPiece()) {
-
                     if(item.piece()) {
-
                         self.selectedPiece(item);
-                        item.selected(true);
                     }
                 }
+
                 else {
 
                     if(self.selectedPiece() == item) {
                         self.selectedPiece(undefined);
-                        item.selected(false);
+                        return;
                     }
 
                     var target = item;
@@ -118,8 +118,7 @@
                     var targetSquare = self.board[target.row()][target.col()]();
 
                     if(capturedPieceColor == originSquare.pieceColor()) {
-                        // self.selectedPiece(capturedPiece);
-                        // item.selected(true);
+                        self.selectedPiece(target);
                         return;
                     }
 
@@ -127,11 +126,8 @@
                     targetSquare.piece(movingPiece);
                     targetSquare.pieceColor(originSquare.pieceColor());
 
-                    console.log( movingPiece );
-
                     self.selectedPiece(undefined);
                     originSquare.piece(undefined);
-                    originSquare.selected(false);
                     originSquare.pieceColor(undefined);
 
                     if (capturedPieceColor === 'black') {
@@ -167,7 +163,6 @@
                             col: ko.observable(j),
                             piece: ko.observable(),
                             pieceColor: ko.observable(),
-                            selected: ko.observable(false)
                         });
                     }
                 }
