@@ -4,6 +4,10 @@
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
         <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
             .piece {
                 font-size: 64px;
                 width: 80px;
@@ -11,6 +15,16 @@
                 margin: 0;
                 text-align: center;
                 vertical-align: middle;
+                -webkit-transform: scale(1);
+                -webkit-transition: all 0.3s;
+            }
+
+            .piece:hover {
+                -webkit-transform: scale(1.1);
+            }
+
+            .selected-piece, .selected-piece:hover {
+                -webkit-transform: scale(1.4);
             }
 
             .captured-pieces {
@@ -25,9 +39,6 @@
                 margin: 0;
             }
 
-            .selected-piece {
-                background-color: blue;
-            }
 
             table {
                 border-collapse: collapse;
@@ -40,19 +51,13 @@
                 background: #CCC;
             }
 
-            td {
-                width: 64px;
-                height: 64px;
-                padding: 0;
-            }
-
             tr th p {
                 width: 20px;
             }
 
             #aslkfj {
-                width: 660px;
-                height: 660px;
+                max-width: 700px;
+                max-height: 700px;
                 border: 20px solid black;
                 margin: auto;
             }
@@ -196,7 +201,8 @@
                 else {
 
                     if(self.selectedPiece() == item) {
-                        return;
+                        self.selectedPiece(undefined);
+                        item.selected(false);
                     }
 
                     var target = item;
@@ -206,12 +212,16 @@
                     var targetSquare = self.board[target.row()][target.col()]();
 
                     if(capturedPieceColor == originSquare.pieceColor()) {
+                        // self.selectedPiece(capturedPiece);
+                        // item.selected(true);
                         return;
                     }
 
                     var movingPiece = originSquare.piece();
                     targetSquare.piece(movingPiece);
                     targetSquare.pieceColor(originSquare.pieceColor());
+
+                    console.log( movingPiece );
 
                     self.selectedPiece(undefined);
                     originSquare.piece(undefined);
@@ -255,6 +265,7 @@
                         });
                     }
                 }
+
 
                 board[0][0]().piece('&#9814;');
                 board[0][0]().pieceColor('white');
