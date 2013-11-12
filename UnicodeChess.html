@@ -122,9 +122,11 @@
                         return;
                     }
 
+
                     var movingPiece = originSquare.piece();
                     targetSquare.piece(movingPiece);
                     targetSquare.pieceColor(originSquare.pieceColor());
+
 
                     self.selectedPiece(undefined);
                     originSquare.piece(undefined);
@@ -136,8 +138,8 @@
                             piece: ko.observable(capturedPiece)
                         });
                     }
-                    else if (capturedPieceColor === 'white') {
 
+                    else if (capturedPieceColor === 'white') {
                         self.whiteCaptured.push({
                             piece: ko.observable(capturedPiece)
                         });
