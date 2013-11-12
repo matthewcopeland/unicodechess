@@ -17,6 +17,12 @@
                 vertical-align: middle;
                 -webkit-transform: scale(1);
                 -webkit-transition: all 0.3s;
+                cursor: pointer;
+                cursor: -webkit-grab;
+            }
+
+            .piece:active {
+              cursor: -webkit-grabbing;
             }
 
             .piece:hover {
@@ -67,7 +73,7 @@
             <table>
                 <tbody data-bind="foreach: board">
                   <tr data-bind="foreach: $data">
-                      <td><p class="piece" data-bind="html: piece, click: $parent.clickHandler, css: {'selected-piece': selected }"></p></td>
+                      <td><p class="piece" data-bind="html: piece, click: $parent.clickHandler, css: {'selected-piece': $data == $root.selectedPiece }"></p></td>
                   </tr>
                 </tbody>
             </table>
